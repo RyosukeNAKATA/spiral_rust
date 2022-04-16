@@ -1,5 +1,4 @@
-# Spiral Book(https://book.mynavi.jp/support/pc/5295/)
-
+<b> [Spiral Book](https://book.mynavi.jp/support/pc/5295/) </b>
 
 | chapter | problem id(link) | note |
 | - | - | - |
