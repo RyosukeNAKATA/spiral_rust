@@ -1,4 +1,4 @@
-# 螺旋本やる!
+# Spiral Book(https://book.mynavi.jp/support/pc/5295/)
 
 
 | chapter | problem id(link) | note |
