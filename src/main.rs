@@ -4,6 +4,24 @@ use std::io;
 fn main() {
     let n: usize = read();
     let mut a: Vec<i32> = read_vec();
+
+    for i in 1..n {
+        let v = a[i];
+        let mut j: i32 = i as i32 - 1;
+        while j >= 0 && a[j as usize] > v {
+            a[(j as usize + 1)] = a[j as usize];
+            j += -1;
+        }
+        a[(j as usize + 1)] = v;
+
+        for k in 0..n {
+            if k != n - 1 {
+                print!("{} ", a[k]);
+            } else {
+                println!("{}", a[k]);
+            }
+        }
+    }
 }
 
 fn read<T: std::str::FromStr>() -> T {

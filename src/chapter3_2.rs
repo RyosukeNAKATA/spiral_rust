@@ -5,14 +5,14 @@ fn main() {
     let n: usize = read();
     let mut a: Vec<i32> = read_vec();
 
-    for i in 0..n - 1 {
-        let mut v = a[i];
-        let mut j = i - 1;
-        while j >= 0 && a[j] > v {
-            a[j + 1] = a[j];
+    for i in 0..n {
+        let v = a[i];
+        let mut j: i32 = i as i32 - 1;
+        while j >= 0 && a[j as usize] > v {
+            a[(j + 1) as usize] = a[j as usize];
             j -= 1;
         }
-        a[j + 1] = v;
+        a[(j + 1) as usize] = v;
 
         for k in 0..n {
             if k != n - 1 {
