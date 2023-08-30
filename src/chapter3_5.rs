@@ -1,83 +1,79 @@
-use std::io;
-
-fn main() {
-    let n: usize = read();
-    let a: Vec<String> = read_vec();
-
-    let mut a_bubble = a.copy();
-    let mut a_selection = a.copy();
-
-    let sorted_bubble = sort_bubble(a_bubble, n);
-    let sorted_selection = sort_selection(a_selection, n);
-
-    print_vec(sorted_bubble);
-    println!({}, is_stable(sorted_bubble));
-    print_vec(sorted_selection);
-    println!({}, is_stable(sorted_selection));
-}
-
-fn sort_bubble(a: Vec<()>, n: i32) -> Vev<()> {
-    let mut flag = true;
-    let mut counter = 0;
-    while flag {
-        flag = false;
-        for j in (1..n).rev() {
-            if a[j] < a[j - 1] {
-                a.swap(j, j - 1);
-                flag = true;
-                counter += 1;
+fn bubble_sort(n: usize, a: &mut Vec<(usize, &str)>, result: &Vec<&str>) {
+    for i in 0..n {
+        for j in ((i + 1)..n).rev() {
+            if a[j].0 < a[j - 1].0 {
+                let temp = a[j];
+                a[j] = a[j - 1];
+                a[j - 1] = temp;
             }
         }
     }
-
-    for k in 0..n {
-        if k != n - 1 {
-            print!("{} ", a[k]);
-        } else {
-            println!("{}", a[k]);
-        }
+    println!("{}", a.iter().map(|i| i.1).collect::<Vec<&str>>().join(" "));
+    if a.iter()
+        .map(|i| i.1)
+        .zip(result.iter())
+        .any(|pair| pair.0 != *pair.1)
+    {
+        println!("{}", "Not stable");
+    } else {
+        println!("{}", "Stable");
     }
-    a
 }
 
-fn sort_selection(a: Vec<()>, n: i32) -> Vec<()> {
-    for i in 0..n - 1 {
+fn selection_sort(n: usize, a: &mut Vec<(usize, &str)>, result: &Vec<&str>) {
+    for i in 0..n {
         let mut minj = i;
         for j in i..n {
-            if a[j] < a[minj] {
+            if a[j].0 < a[minj].0 {
                 minj = j;
             }
         }
         if minj != i {
-            ans += 1;
+            let temp = a[i];
+            a[i] = a[minj];
+            a[minj] = temp;
         }
-        a.swap(i, minj);
     }
-    a
+    println!("{}", a.iter().map(|i| i.1).collect::<Vec<&str>>().join(" "));
+    if a.iter()
+        .map(|i| i.1)
+        .zip(result.iter())
+        .any(|pair| pair.0 != *pair.1)
+    {
+        println!("{}", "Not stable");
+    } else {
+        println!("{}", "Stable");
+    }
 }
 
-fn is_stable() {}
-
-fn read<T: std::str::FromStr>() -> T {
-    let mut s = String::new();
-    std::io::stdin().read_line(&mut s).ok();
-    s.trim().parse().ok().unwrap()
-}
-fn read_vec<T: std::str::FromStr>() -> Vec<T> {
-    read::<String>()
+fn main() {
+    let mut n = String::new();
+    std::io::stdin().read_line(&mut n).ok();
+    let n: usize = n.trim().parse::<usize>().unwrap();
+    let mut a = String::new();
+    std::io::stdin().read_line(&mut a).ok();
+    let a: Vec<(usize, &str)> = a
+        .trim()
         .split_whitespace()
-        .map(|e| e.parse().ok().unwrap())
-        .collect()
-}
-fn read_vec2<T: std::str::FromStr>(n: u32) -> Vec<Vec<T>> {
-    (0..n).map(|_| read_vec()).collect()
-}
-fn print_vec(v: Vec) {
-    for i in 0..v.len() {
-        if i != v.len() - 1 {
-            print!("{} ", v[i]);
-        } else {
-            println!("{}", v[i]);
-        }
-    }
+        .map(|i| {
+            (
+                i.chars()
+                    .skip(1)
+                    .next()
+                    .unwrap()
+                    .to_string()
+                    .parse::<usize>()
+                    .unwrap(),
+                i,
+            )
+        })
+        .collect();
+    let mut stable_sorted = a.clone();
+    stable_sorted.sort_by_key(|pair| pair.0);
+    let stable_sorted = stable_sorted
+        .iter()
+        .map(|pair| pair.1)
+        .collect::<Vec<&str>>();
+    bubble_sort(n, &mut a.clone(), &stable_sorted);
+    selection_sort(n, &mut a.clone(), &stable_sorted);
 }
