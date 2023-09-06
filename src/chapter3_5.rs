@@ -1,3 +1,5 @@
+use std::io;
+
 fn bubble_sort(n: usize, a: &mut Vec<(usize, &str)>, result: &Vec<&str>) {
     for i in 0..n {
         for j in ((i + 1)..n).rev() {
@@ -76,4 +78,28 @@ fn main() {
         .collect::<Vec<&str>>();
     bubble_sort(n, &mut a.clone(), &stable_sorted);
     selection_sort(n, &mut a.clone(), &stable_sorted);
+}
+
+fn read<T: std::str::FromStr>() -> T {
+    let mut s = String::new();
+    std::io::stdin().read_line(&mut s).ok();
+    s.trim().parse().ok().unwrap()
+}
+fn read_vec<T: std::str::FromStr>() -> Vec<T> {
+    read::<String>()
+        .split_whitespace()
+        .map(|e| e.parse().ok().unwrap())
+        .collect()
+}
+fn read_vec2<T: std::str::FromStr>(n: u32) -> Vec<Vec<T>> {
+    (0..n).map(|_| read_vec()).collect()
+}
+fn print_vec(v: Vec<i32>) {
+    for i in 0..v.len() {
+        if i != v.len() - 1 {
+            print!("{} ", v[i]);
+        } else {
+            println!("{}", v[i]);
+        }
+    }
 }
