@@ -1,35 +1,54 @@
 fn main() {
-    let mut n = String::new();
-    std::io::stdin().read_line(&mut n).ok();
-    let n: usize = n.trim().parse::<usize>().unwrap();
-    let mut a = vec![];
-    for i in 0..n {
+    let mut s = String::new();
+    std::io::stdin().read_line(&mut s).ok();
+    let n: usize = s.trim().parse().unwrap();
+    let mut a: Vec<i32> = Vec::new();
+    for _ in 0..n {
         let mut s = String::new();
-        let _tmp = s.trim().parse().ok().unwrap();
-        a.push(_tmp)
+        std::io::stdin().read_line(&mut s).ok();
+        let x: i32 = s.trim().parse().unwrap();
+        a.push(x);
+    }
+    shell_sort(&mut a, n);
+    for v in a {
+        println!("{}", v);
     }
 }
 
-fn read<T: std::str::FromStr>() -> T {
-    let mut s = String::new();
-    std::io::stdin().read_line(&mut s).ok();
-    s.trim().parse().ok().unwrap()
-}
-fn read_vec<T: std::str::FromStr>() -> Vec<T> {
-    read::<String>()
-        .split_whitespace()
-        .map(|e| e.parse().ok().unwrap())
-        .collect()
-}
-fn read_vec2<T: std::str::FromStr>(n: u32) -> Vec<Vec<T>> {
-    (0..n).map(|_| read_vec()).collect()
-}
-fn print_vec(v: Vec<i32>) {
-    for i in 0..v.len() {
-        if i != v.len() - 1 {
-            print!("{} ", v[i]);
-        } else {
-            println!("{}", v[i]);
+fn insertion_sort(a: &mut Vec<i32>, n: usize, g: usize) -> usize {
+    let mut cnt = 0;
+    for i in g..n {
+        let v = a[i];
+        let mut j = i;
+        while j >= g && a[j - g] > v {
+            a[j] = a[j - g];
+            j -= g;
+            cnt += 1;
         }
+        a[j] = v;
     }
+    cnt
+}
+
+fn shell_sort(a: &mut Vec<i32>, n: usize) {
+    let mut g: Vec<usize> = Vec::new();
+    let mut h: usize = 1;
+    while h <= n {
+        g.push(h);
+        h = 3 * h + 1;
+    }
+    g.reverse();
+    let m = g.len();
+    println!("{}", m);
+    let s = g
+        .iter()
+        .map(|x| x.to_string())
+        .collect::<Vec<String>>()
+        .join(" ");
+    println!("{}", s);
+    let mut cnt = 0;
+    for i in 0..m {
+        cnt += insertion_sort(a, n, g[i]);
+    }
+    println!("{}", cnt);
 }
